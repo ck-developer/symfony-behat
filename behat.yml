@@ -1,0 +1,68 @@
+default:
+    formatters:
+        pretty:
+            verbose: true
+            paths: false
+            snippets: false
+    extensions:
+        FriendsOfBehat\CrossContainerExtension: ~
+        FriendsOfBehat\ServiceContainerExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                bootstrap: tests/behat/bootstrap.php
+                path: src/autoload.php
+                class: App\Kernel
+                env: test
+                debug: false
+        FriendsOfBehat\ContextServiceExtension:
+            imports:
+                - "tests/Behat/Resources/config/contexts.yml"
+        Behat\MinkExtension:
+            base_url: http://localhost:8000
+            default_session: symfony
+            sessions:
+                symfony:
+                    symfony: ~
+                chrome:
+                    selenium2:
+                        wd_host: "http://localhost:4444/wd/hub"
+                        browser: chrome
+                        capabilities:
+                            browserName: chrome
+                            browser: chrome
+                            chrome:
+                                switches:
+                                    - "start-fullscreen"
+                                    - "start-maximized"
+                                    - "no-sandbox"
+                firefox:
+                    selenium2:
+                        wd_host: "http://localhost:4444/wd/hub"
+                        browser: firefox
+                        capabilities:
+                            browserName: firefox
+                            browser: firefox
+        SensioLabs\Behat\PageObjectExtension:
+            namespaces:
+                page:
+                    - App\Tests\Behat\Page
+                element:
+                    - App\Tests\Behat\Element
+    suites:
+        app:
+            paths:    [ "%paths.base%/tests/Behat/Features" ]
+            contexts_services:
+                - app.page.context
+    gherkin:
+        filters:
+            tags: "~@todo && ~@wip"
+
+chrome:
+    extensions:
+        Behat\MinkExtension:
+            default_session: chrome
+
+firefox:
+    extensions:
+        Behat\MinkExtension:
+            default_session: firefox

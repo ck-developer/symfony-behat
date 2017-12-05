@@ -1,0 +1,7 @@
+services:
+    app.page.context:
+        class: App\Tests\Behat\Context\PageContext
+        calls:
+            - { method: setPageObjectFactory, arguments: ['@__behat__.sensio_labs.page_object_extension.page_factory']}
+        tags:
+            - { name: fob.context_service }
